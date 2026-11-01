@@ -1,4 +1,4 @@
-[README_desconto_composto (1).md](https://github.com/user-attachments/files/34230030/README_desconto_composto.1.md)
+[README_desconto_composto (2).md](https://github.com/user-attachments/files/34230041/README_desconto_composto.2.md)
 # 📉 Calculadora de Desconto Composto Comercial
 
 Calculadora educacional, em um único arquivo HTML, para resolver problemas de **desconto composto comercial** (desconto "por fora") com **resolução passo a passo**.
