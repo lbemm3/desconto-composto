@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desconto Composto Comercial</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#eef2f7;color:#2d3748;min-height:100vh}
+
+  header{background:linear-gradient(135deg,#1a365d 0%,#2b6cb0 100%);color:#fff;padding:1.8rem 2rem;text-align:center}
+  header h1{font-size:1.7rem;font-weight:700;letter-spacing:.3px}
+  .author{font-size:.88rem;opacity:.88;margin-top:.4rem;line-height:1.6}
+  .author strong{opacity:1;font-weight:600}
+
+  .explanation{background:#fff;margin:1.4rem auto;max-width:820px;padding:1.4rem 1.6rem;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08);font-size:.875rem;line-height:1.75}
+  .explanation h2{font-size:.95rem;color:#2b6cb0;font-weight:700;margin-bottom:.55rem;display:flex;align-items:center;gap:.4rem}
+  .explanation p+p{margin-top:.55rem}
+  .formulas-box{background:#ebf8ff;border-left:4px solid #3182ce;padding:.8rem 1.1rem;margin-top:1rem;border-radius:0 6px 6px 0;font-size:.82rem;line-height:2}
+  .formulas-box strong{color:#1a365d}
+
+  .calculator{max-width:820px;margin:0 auto 2rem;padding:0 1rem}
+
+  .prob-selector{display:grid;grid-template-columns:repeat(5,1fr);gap:.55rem;margin-bottom:1.3rem}
+  @media(max-width:600px){.prob-selector{grid-template-columns:repeat(2,1fr)}}
+  .pb{background:#fff;border:2px solid #bee3f8;border-radius:8px;padding:.65rem .4rem;cursor:pointer;text-align:center;font-size:.75rem;color:#2c5282;transition:all .18s;line-height:1.45;font-family:inherit}
+  .pb:hover{border-color:#3182ce;background:#ebf8ff}
+  .pb.active{background:#2b6cb0;color:#fff;border-color:#2b6cb0}
+  .pb .big{display:block;font-size:.82rem;font-weight:700}
+  .pb .small{display:block;font-size:.7rem;opacity:.8;margin-top:.15rem}
+
+  .card{background:#fff;border-radius:10px;padding:1.4rem 1.5rem;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+  .card h3{font-size:.95rem;color:#1a365d;margin-bottom:1rem;padding-bottom:.55rem;border-bottom:2px solid #bee3f8}
+
+  .input-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:.9rem;margin-bottom:1rem}
+  .field label{display:block;font-size:.8rem;font-weight:600;color:#4a5568;margin-bottom:.28rem}
+  .field input{width:100%;border:1.5px solid #cbd5e0;border-radius:6px;padding:.48rem .7rem;font-size:.92rem;outline:none;transition:border-color .2s;font-family:inherit}
+  .field input:focus{border-color:#2b6cb0;box-shadow:0 0 0 3px rgba(66,153,225,.15)}
+
+  .chk-row{display:flex;align-items:center;gap:.55rem;margin-bottom:.8rem}
+  .chk-row input{width:15px;height:15px;cursor:pointer;accent-color:#2b6cb0}
+  .chk-row label{font-size:.8rem;font-weight:600;color:#4a5568;cursor:pointer}
+
+  .btn-calc{background:#2b6cb0;color:#fff;border:none;border-radius:6px;padding:.65rem 1.6rem;font-size:.9rem;cursor:pointer;transition:background .2s;font-family:inherit;margin-top:.3rem;font-weight:600}
+  .btn-calc:hover{background:#1a365d}
+
+  .result{margin-top:1.2rem;background:#f7fafc;border-radius:8px;padding:1.1rem 1.2rem;border:1px solid #e2e8f0}
+  .result h4{color:#2b6cb0;font-size:.88rem;margin-bottom:.7rem;font-weight:700}
+  .step{border-left:3px solid #90cdf4;background:#fff;padding:.48rem .85rem;margin:.35rem 0;border-radius:0 5px 5px 0;font-size:.84rem;line-height:1.65}
+  .step strong{color:#1a365d}
+  .hl{border-left-color:#2b6cb0;background:#ebf8ff;font-weight:600}
+  .warn{border-left-color:#e53e3e;background:#fff5f5;color:#c53030}
+  .info{border-left-color:#d69e2e;background:#fffff0;color:#744210}
+  .sep{border-left-color:#805ad5;background:#faf5ff}
+
+  footer{text-align:center;padding:.9rem;font-size:.75rem;color:#718096;border-top:1px solid #e2e8f0;margin-top:.5rem;background:#fff}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Calculadora de Desconto Composto Comercial</h1>
+  <div class="author">
+    <strong>Prof. Laerte Bemm</strong> &nbsp;|&nbsp; Departamento de Matemática – Universidade Estadual de Maringá (UEM)
+  </div>
+</header>
+
+<div class="explanation">
+  <h2>📌 O que é desconto composto comercial?</h2>
+  <p>
+    Na prática financeira, <strong>descontar um título</strong> significa antecipar seu recebimento antes do vencimento. O <strong>valor nominal (FV)</strong> é o valor de face do título; o <strong>valor comercial (VC)</strong> é o montante efetivamente recebido; e <strong>VD = FV − VC</strong> é o desconto pago pela antecipação.
+  </p>
+  <p>
+    No <strong>desconto composto comercial</strong> (ou <em>desconto por fora composto</em>), a taxa <em>i</em> é aplicada <em>sucessivamente</em> — período a período — sobre o próprio valor nominal. Isso resulta em <strong>VC = FV · (1 − i)<sup>n</sup></strong>. A <strong>taxa efetiva real</strong> da operação é <strong>i<sub>f</sub> = i / (1 − i)</strong>, e é <em>sempre maior</em> do que a taxa de desconto anunciada.
+  </p>
+  <div class="formulas-box">
+    <strong>Fórmulas principais:</strong><br>
+    VC = FV · (1 − i)<sup>n</sup> &emsp; (valor comercial)<br>
+    VD = FV − VC &emsp; (valor do desconto)<br>
+    FV = VD / [1 − (1 − i)<sup>n</sup>] &emsp; (valor nominal, dado VD)<br>
+    i &nbsp;&nbsp;= 1 − (VC / FV)<sup>1/n</sup> &emsp; (taxa de desconto, dados FV, VC, n)<br>
+    i<sub>f</sub> = i / (1 − i) &emsp; (taxa efetiva — sempre &gt; i)
+  </div>
+</div>
+
+<div class="calculator">
+  <div class="prob-selector">
+    <button class="pb active" onclick="sel(1,this)"><span class="big">VC e VD</span><span class="small">dado FV, n (meses), i</span></button>
+    <button class="pb" onclick="sel(2,this)"><span class="big">VC e VD</span><span class="small">dado FV, n (meses), i</span></button>
+    <button class="pb" onclick="sel(3,this)"><span class="big">Taxa i</span><span class="small">dado FV, VC, n</span></button>
+    <button class="pb" onclick="sel(4,this)"><span class="big">Taxa i<sub>f</sub></span><span class="small">dado i</span></button>
+    <button class="pb" onclick="sel(5,this)"><span class="big">FV e VC</span><span class="small">dado VD, i, n</span></button>
+  </div>
+
+  <div class="card">
+    <h3 id="ptitle"></h3>
+    <div class="input-grid" id="inputs"></div>
+    <div id="extras"></div>
+    <button class="btn-calc" onclick="calc()">▶ Calcular</button>
+    <div id="result"></div>
+  </div>
+</div>
+
+<footer>Calculadora educacional · Prof. Laerte Bemm · Departamento de Matemática – UEM</footer>
+
+<script>
+let cur = 1;
+
+const cfg = {
+  1:{
+    title:"Tipo 1 — Calcular o Valor Comercial (VC), o Valor do Desconto (VD) e a Taxa Efetiva (iᶠ)",
+    fields:[
+      {id:"fv", label:"Valor Nominal — FV (R$)", ph:"Ex.: 2000"},
+      {id:"n",  label:"Prazo de Antecipação — n (meses inteiros)", ph:"Ex.: 3"},
+      {id:"i",  label:"Taxa de Desconto — i (% a.m.)", ph:"Ex.: 2,5"}
+    ],
+    extra: `<div class="chk-row"><input type="checkbox" id="chk_rat"><label for="chk_rat">Comparar com desconto racional composto (por dentro)</label></div>`
+  },
+  2:{
+    title:"Tipo 2 — Calcular o Valor Comercial (VC) e o Valor do Desconto (VD) com prazo em meses",
+    fields:[
+      {id:"fv", label:"Valor Nominal — FV (R$)", ph:"Ex.: 34000"},
+      {id:"nd", label:"Prazo de Antecipação — n (meses)", ph:"Ex.: 5"},
+      {id:"i",  label:"Taxa de Desconto — i (% a.m.)", ph:"Ex.: 4,7"}
+    ]
+  },
+  3:{
+    title:"Tipo 3 — Calcular a Taxa de Desconto (i) e a Taxa Efetiva (iᶠ)",
+    fields:[
+      {id:"fv", label:"Valor Nominal — FV (R$)", ph:"Ex.: 1000"},
+      {id:"vc", label:"Valor Comercial — VC (R$)", ph:"Ex.: 880"},
+      {id:"n",  label:"Prazo de Antecipação — n (meses)", ph:"Ex.: 4"}
+    ]
+  },
+  4:{
+    title:"Tipo 4 — Calcular a Taxa Efetiva (iᶠ) a partir da Taxa de Desconto (i)",
+    fields:[
+      {id:"i",  label:"Taxa de Desconto — i (%)", ph:"Ex.: 24,75"}
+    ]
+  },
+  5:{
+    title:"Tipo 5 — Calcular o Valor Nominal (FV) e o Valor Comercial (VC)",
+    fields:[
+      {id:"vd", label:"Valor do Desconto — VD (R$)", ph:"Ex.: 4780,98"},
+      {id:"i",  label:"Taxa de Desconto — i (% a.m.)", ph:"Ex.: 4,5"},
+      {id:"n",  label:"Prazo de Antecipação — n (meses)", ph:"Ex.: 7"}
+    ]
+  }
+};
+
+const R  = (v,d=2)=>v.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const pn = s=>parseFloat(String(s).replace(',','.'));
+const st = (lbl,formula,res,cls='')=>`<div class="step ${cls}"><strong>${lbl}:</strong> ${formula} <strong>= ${res}</strong></div>`;
+
+function sel(n,btn){
+  cur=n;
+  document.querySelectorAll('.pb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+  document.getElementById('result').innerHTML='';
+}
+
+function render(){
+  const c=cfg[cur];
+  document.getElementById('ptitle').textContent=c.title;
+  document.getElementById('inputs').innerHTML=c.fields.map(f=>
+    `<div class="field"><label for="${f.id}">${f.label}</label>
+     <input type="text" id="${f.id}" placeholder="${f.ph}" inputmode="decimal"></div>`
+  ).join('');
+  document.getElementById('extras').innerHTML=c.extra||'';
+}
+
+function calc(){
+  const ra=document.getElementById('result');
+  const g=id=>{const el=document.getElementById(id);return el?pn(el.value):NaN;};
+  let html='<div class="result"><h4>📋 Resolução passo a passo</h4>';
+  try{
+
+    if(cur===1){
+      const FV=g('fv'), n=g('n'), ip=g('i');
+      if([FV,n,ip].some(isNaN)||FV<=0||n<=0||ip<=0) throw "Preencha todos os campos com valores positivos.";
+      if(!Number.isInteger(n)||n<1) throw "O prazo n deve ser um número inteiro positivo (meses).";
+      if(ip>=100) throw "A taxa de desconto deve ser menor que 100%.";
+      const i=ip/100, fator=Math.pow(1-i,n), VC=FV*fator, VD=FV-VC, iF=i/(1-i);
+      html+=st("Dados",`FV = R$ ${R(FV)};  n = ${n} ${n===1?'mês':'meses'};  i = ${R(ip,4)}% a.m.`,"✓");
+      html+=st("Fator de desconto",`(1 − ${R(ip,4)}%)^${n} = ${R(1-i,6)}^${n}`,R(fator,6));
+      html+=st("Valor Comercial",`VC = FV · (1 − i)^n = R$ ${R(FV)} · ${R(fator,6)}`,`R$ ${R(VC)}`,"hl");
+      html+=st("Valor do Desconto",`VD = FV − VC = R$ ${R(FV)} − R$ ${R(VC)}`,`R$ ${R(VD)}`,"hl");
+      html+=st("Taxa Efetiva",`i_f = i / (1 − i) = ${R(ip,4)}% / (1 − ${R(ip,4)}%) = ${R(i,6)} / ${R(1-i,6)}`,`${R(iF*100,4)}% a.m.`);
+      html+=`<div class="step info">⚠️ A taxa efetiva (${R(iF*100,4)}% a.m.) é maior que a taxa de desconto (${R(ip,4)}% a.m.), como esperado no desconto composto comercial.</div>`;
+
+      const chk=document.getElementById('chk_rat');
+      if(chk&&chk.checked){
+        const VCr=FV/Math.pow(1+i,n), VDr=FV-VCr;
+        html+=`<div class="step sep"><strong>Comparação — Desconto Racional Composto (por dentro):</strong><br>
+          VC_rat = FV / (1 + i)^n = R$ ${R(FV)} / ${R(Math.pow(1+i,n),6)} = R$ ${R(VCr)}<br>
+          VD_rat = FV − VC_rat = R$ ${R(VDr)}</div>`;
+        html+=`<div class="step warn">⚠️ O desconto comercial (R$ ${R(VD)}) é maior que o racional (R$ ${R(VDr)}): no desconto por fora, o banco retém mais!</div>`;
+      }
+
+    }else if(cur===2){
+      const FV=g('fv'), dias=g('nd'), ip=g('i');
+      if([FV,dias,ip].some(isNaN)||FV<=0||dias<=0||ip<=0) throw "Preencha todos os campos com valores positivos.";
+      if(ip>=100) throw "A taxa de desconto deve ser menor que 100%.";
+      const i=ip/100, n=dias, fator=Math.pow(1-i,n), VC=FV*fator, VD=FV-VC, iF=i/(1-i);
+      html+=st("Dados",`FV = R$ ${R(FV)};  n = ${R(n,4)} meses;  i = ${R(ip,4)}% a.m.`,"✓");
+      html+=st("Fator de desconto",`(1 − ${R(ip,4)}%)^${R(n,6)} = ${R(1-i,6)}^${R(n,6)}`,R(fator,6));
+      html+=st("Valor Comercial",`VC = FV · (1 − i)^n = R$ ${R(FV)} · ${R(fator,6)}`,`R$ ${R(VC)}`,"hl");
+      html+=st("Valor do Desconto",`VD = FV − VC = R$ ${R(FV)} − R$ ${R(VC)}`,`R$ ${R(VD)}`,"hl");
+      html+=st("Taxa Efetiva",`i_f = i / (1 − i) = ${R(i,6)} / ${R(1-i,6)}`,`${R(iF*100,4)}% a.m.`);
+      html+=`<div class="step info">⚠️ A taxa efetiva (${R(iF*100,4)}% a.m.) é maior que a taxa de desconto (${R(ip,4)}% a.m.).</div>`;
+
+    }else if(cur===3){
+      const FV=g('fv'), VC=g('vc'), n=g('n');
+      if([FV,VC,n].some(isNaN)||FV<=0||VC<=0||n<=0) throw "Preencha todos os campos com valores positivos.";
+      if(VC>=FV) throw "O Valor Comercial (VC) deve ser menor que o Valor Nominal (FV).";
+      const VD=FV-VC, r=VC/FV, i=1-Math.pow(r,1/n), iF=i/(1-i);
+      html+=st("Dados",`FV = R$ ${R(FV)};  VC = R$ ${R(VC)};  n = ${R(n,4)} meses`,"✓");
+      html+=st("Valor do Desconto",`VD = FV − VC = R$ ${R(FV)} − R$ ${R(VC)}`,`R$ ${R(VD)}`);
+      html+=st("Razão VC/FV",`${R(VC)} / ${R(FV)}`,R(r,6));
+      html+=`<div class="step"><strong>Isolando i de VC = FV · (1 − i)^n:</strong><br>
+        &nbsp;&nbsp;(1 − i)^${R(n,4)} = ${R(r,6)}<br>
+        &nbsp;&nbsp;1 − i = ${R(r,6)}^(1/${R(n,4)}) = ${R(1-i,6)}<br>
+        &nbsp;&nbsp;i = 1 − ${R(1-i,6)} = <strong>${R(i*100,4)}%</strong></div>`;
+      html+=st("Taxa de Desconto","i isolada da fórmula acima",`${R(i*100,4)}% a.m.`,"hl");
+      html+=st("Taxa Efetiva",`i_f = i / (1 − i) = ${R(i,6)} / ${R(1-i,6)}`,`${R(iF*100,4)}% a.m.`,"hl");
+      html+=`<div class="step info">⚠️ Confirmação: i_f (${R(iF*100,4)}%) > i (${R(i*100,4)}%).</div>`;
+
+    }else if(cur===4){
+      const ip=g('i');
+      if(isNaN(ip)||ip<=0) throw "Preencha o campo com um valor positivo.";
+      if(ip>=100) throw "A taxa de desconto deve ser menor que 100%.";
+      const i=ip/100, iF=i/(1-i), delta=(iF-i)*100;
+      html+=st("Dado",`i = ${R(ip,4)}%`,"✓");
+      html+=st("Fórmula","i_f = i / (1 − i)","");
+      html+=st("Cálculo",`i_f = ${R(i,6)} / (1 − ${R(i,6)}) = ${R(i,6)} / ${R(1-i,6)}`,`${R(iF*100,4)}%`,"hl");
+      html+=`<div class="step info">⚠️ O banco anuncia ${R(ip,4)}%, mas o custo efetivo é ${R(iF*100,4)}% — diferença de ${R(delta,4)} pontos percentuais!</div>`;
+
+    }else if(cur===5){
+      const VD=g('vd'), ip=g('i'), n=g('n');
+      if([VD,ip,n].some(isNaN)||VD<=0||ip<=0||n<=0) throw "Preencha todos os campos com valores positivos.";
+      if(ip>=100) throw "A taxa de desconto deve ser menor que 100%.";
+      const i=ip/100, pot=Math.pow(1-i,n), fator=1-pot, FV=VD/fator, VC=FV-VD, iF=i/(1-i);
+      html+=st("Dados",`VD = R$ ${R(VD)};  i = ${R(ip,4)}%;  n = ${R(n,4)} meses`,"✓");
+      html+=`<div class="step"><strong>Isolando FV de VD = FV · [1 − (1 − i)^n]:</strong><br>
+        &nbsp;&nbsp;(1 − i)^n = (1 − ${R(ip,4)}%)^${R(n,4)} = ${R(1-i,6)}^${R(n,4)} = ${R(pot,6)}<br>
+        &nbsp;&nbsp;Fator = 1 − ${R(pot,6)} = <strong>${R(fator,6)}</strong><br>
+        &nbsp;&nbsp;FV = R$ ${R(VD)} / ${R(fator,6)} = <strong>R$ ${R(FV)}</strong></div>`;
+      html+=st("Valor Nominal",`FV = VD / [1 − (1 − i)^n]`,`R$ ${R(FV)}`,"hl");
+      html+=st("Valor Comercial",`VC = FV − VD = R$ ${R(FV)} − R$ ${R(VD)}`,`R$ ${R(VC)}`,"hl");
+      html+=st("Taxa Efetiva",`i_f = i / (1 − i) = ${R(i,6)} / ${R(1-i,6)}`,`${R(iF*100,4)}% a.m.`);
+      html+=`<div class="step info">⚠️ A taxa efetiva (${R(iF*100,4)}%) é maior que a taxa de desconto (${R(ip,4)}%).</div>`;
+    }
+
+  }catch(e){
+    html+=`<div class="step warn">❌ ${e}</div>`;
+  }
+  ra.innerHTML=html+'</div>';
+}
+
+render();
+</script>
+</body>
+</html>
